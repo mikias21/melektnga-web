@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
-import { Plane, Package, Shield, ArrowRight, MapPin, Users, Star, TrendingUp, ShieldCheck, Zap } from 'lucide-react';
+import { Plane, Package, Shield, ArrowRight, MapPin, Users, Star, TrendingUp, ShieldCheck, Zap, Globe } from 'lucide-react';
 
 const LANGS = ['en', 'zh', 'am'];
 
@@ -13,7 +13,7 @@ const copy = {
     ctaSub: 'Free to join · Instant verification',
     qr: 'Scan to Download',
     qrAppLabel: 'Download',
-    qrAppSub: 'Android & iOS',
+    qrAppSub: 'Android',
     qrTelegramLabel: 'Join',
     qrTelegramSub: 'Telegram Support',
     qrWeChatLabel: 'Join',
@@ -27,6 +27,7 @@ const copy = {
     ],
     feats: ['Post Your Trip', 'Send Packages', 'Trusted Community', 'Real-time Chat'],
     trust: ['Verified IDs', 'Secure Payments', 'Real-time Tracking', '24/7 Support'],
+    website: 'melektnga.vercel.app',
   },
   zh: {
     badge: '埃塞俄比亚 · 中国桥梁',
@@ -50,6 +51,7 @@ const copy = {
     ],
     feats: ['发布行程', '寄送物品', '可信社区', '实时聊天'],
     trust: ['实名认证', '安全支付', '实时追踪', '全天候支持'],
+    website: 'melektnga.vercel.app',
   },
   am: {
     badge: 'ኢትዮጵያ · ቻይና',
@@ -73,6 +75,7 @@ const copy = {
     ],
     feats: ['ጉዞ ይለጥፉ', 'ጥቅሎች ይላኩ', 'ታማኝ ማህበረሰብ', 'ቀጥታ ውይይት'],
     trust: ['የተረጋገጠ መታወቂያ', 'ደህንነቱ የተጠበቅ ክፍያ', 'በእውነተኛ ጊዜ መከታተል', '24/7 ድጋፍ'],
+    website: 'melektnga.vercel.app',
   },
 };
 
@@ -293,7 +296,6 @@ function RouteVisualization() {
 }
 
 function QRDisplay({ seed, color, label, sublabel, delay, imageUrl }) {
-  // Generate fake QR cells only if no image is provided
   const cells = !imageUrl ? Array.from({ length: 81 }, (_, i) => {
     const r = Math.floor(i / 9), c = i % 9;
     const finder = (r < 3 && c < 3) || (r < 3 && c > 5) || (r > 5 && c < 3);
@@ -325,7 +327,6 @@ function QRDisplay({ seed, color, label, sublabel, delay, imageUrl }) {
                   e.target.nextSibling.style.display = 'flex';
                 }}
               />
-              {/* Fallback if image fails to load */}
               <div className="hidden w-full h-full items-center justify-center text-[10px] text-muted-foreground">
                 QR Code
               </div>
@@ -470,6 +471,7 @@ export default function Landing() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
                 className="flex flex-col sm:flex-row gap-4"
+                onClick={() => window.open('https://melektnga.vercel.app/melektnga-v1.0.0.apk', '_blank')}
               >
                 <motion.button
                   whileHover={{ scale: 1.02, y: -2 }}
@@ -494,6 +496,20 @@ export default function Landing() {
                     ))}
                   </div>
                   <span>{t.ctaSub}</span>
+                </div>
+              </motion.div>
+
+              {/* Website Link */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+                className="flex items-center gap-2"
+              >
+                <div className="flex items-center gap-2 bg-white/80 border border-orange-100/60 rounded-xl px-4 py-2.5 shadow-sm">
+                  <Globe className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-semibold text-foreground">https://</span>
+                  <span className="text-sm font-bold text-primary">{t.website}</span>
                 </div>
               </motion.div>
 
@@ -572,6 +588,7 @@ export default function Landing() {
                         label={t.qrAppLabel} 
                         sublabel={t.qrAppSub}
                         delay={0.1}
+                        imageUrl="/images/qr.png"
                       />
                       <QRDisplay 
                         seed={2} 
